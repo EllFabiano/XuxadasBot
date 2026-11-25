@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#17201C">
+  <title>XUXADAS SHOP - Robô WhatsApp Notificador</title>
+  <link rel="icon" type="image/jpeg" href="Logoxuxadas.jpg">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+      background: #1D2723;
+      color: #F0FDF4;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .card {
+      background: linear-gradient(145deg, rgba(54, 78, 67, 0.58) 0%, rgba(26, 40, 34, 0.75) 52%, rgba(16, 26, 22, 0.86) 100%);
+      backdrop-filter: blur(16px) saturate(145%);
+      -webkit-backdrop-filter: blur(16px) saturate(145%);
+      border: 1px solid rgba(187, 247, 208, 0.18);
+      border-radius: 26px;
+      width: 100%;
+      max-width: 520px;
+      padding: 32px;
+      box-shadow: 0 18px 40px rgba(6, 12, 9, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+      text-align: center;
+      position: relative;
+    }
+    .logo-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #141C19;
+      border: 1px solid rgba(22, 163, 74, 0.25);
+      padding: 7px 16px;
+      border-radius: 30px;
+      color: #4ADE80;
+      font-size: 0.85rem;
+      font-weight: 800;
+      margin-bottom: 18px;
+      box-shadow: inset 2px 2px 5px rgba(8, 13, 11, 0.55), inset -2px -2px 5px rgba(42, 56, 50, 0.35);
+    }
+    h1 {
+      font-size: 1.55rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+      background: linear-gradient(135deg, #22C55E, #4ADE80);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    p.subtitle {
+      font-size: 0.88rem;
+      color: #8CA297;
+      margin-bottom: 24px;
+    }
+    .status-box {
+      background: #141C19;
+      border: 1px solid rgba(167, 243, 208, 0.10);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: inset 4px 4px 8px rgba(8, 13, 11, 0.65), inset -3px -3px 7px rgba(42, 56, 50, 0.35);
+    }
+    .status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #F0FDF4;
+    }
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #F87171;
+      box-shadow: 0 0 8px rgba(220, 38, 38, 0.45);
+      animation: pulse 1.8s infinite;
+    }
+    .dot.connected {
+      background: #16A34A;
+      box-shadow: 0 0 10px rgba(22, 163, 74, 0.5);
+    }
+    .dot.connecting {
+      background: #FBBF24;
+      box-shadow: 0 0 10px rgba(217, 119, 6, 0.5);
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.15); }
+    }
+    .qr-container {
+      background: #ffffff;
+      padding: 18px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-bottom: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      box-shadow: 8px 8px 18px rgba(8, 13, 11, 0.65), -6px -6px 16px rgba(42, 56, 50, 0.35);
+      position: relative;
+    }
+    .qr-container img {
+      width: 260px;
+      height: 260px;
+      display: block;
+    }
+    .connected-view {
+      display: none;
+      padding: 20px 0;
+    }
+    .connected-icon {
+      font-size: 3.5rem;
+      margin-bottom: 12px;
+    }
+    .phone-pill {
+      display: inline-block;
+      background: #141C19;
+      border: 1px solid rgba(22, 163, 74, 0.3);
+      color: #4ADE80;
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      margin-bottom: 16px;
+      box-shadow: inset 3px 3px 6px rgba(8, 13, 11, 0.6), inset -3px -3px 6px rgba(42, 56, 50, 0.35);
+    }
+    .btn {
+      background: linear-gradient(135deg, #4ADE80, #22C55E);
+      color: #042414;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 14px;
+      font-weight: 800;
+      font-size: 0.92rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 6px 6px 14px rgba(8, 13, 11, 0.7), -3px -3px 8px rgba(42, 56, 50, 0.35);
+      transition: all 0.2s;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 8px 8px 18px rgba(74, 222, 128, 0.28), -4px -4px 10px rgba(255, 255, 255, 0.9);
+    }
+    .btn-danger {
+      background: #1D2723;
+      color: #F87171;
+      border: 1px solid rgba(220, 38, 38, 0.25);
+      box-shadow: 4px 4px 10px rgba(8, 13, 11, 0.65), -3px -3px 8px rgba(42, 56, 50, 0.35);
+    }
+    .btn-danger:hover {
+      background: rgba(239, 68, 68, 0.16);
+      box-shadow: 6px 6px 14px rgba(220, 38, 38, 0.16);
+    }
+    .test-box {
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(15, 23, 42, 0.08);
+      text-align: left;
+    }
+    .test-box label {
+      display: block;
+      font-size: 0.82rem;
+      color: #C5D4CD;
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+    .test-box input, .test-box textarea {
+      width: 100%;
+      background: #141C19;
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      color: #F0FDF4;
+      padding: 11px 13px;
+      border-radius: 12px;
+      font-size: 0.88rem;
+      margin-bottom: 10px;
+      outline: none;
+      font-family: inherit;
+      box-shadow: inset 4px 4px 8px rgba(8, 13, 11, 0.65), inset -3px -3px 7px rgba(42, 56, 50, 0.35);
+    }
+    .test-box input:focus, .test-box textarea:focus {
+      border-color: #4ADE80;
+      box-shadow: inset 4px 4px 8px rgba(8, 13, 11, 0.65), inset -3px -3px 7px rgba(42, 56, 50, 0.35), 0 0 0 3px rgba(74, 222, 128, 0.15);
+    }
+    .instruction {
+      font-size: 0.83rem;
+      color: #C5D4CD;
+      line-height: 1.55;
+      background: #141C19;
+      border: 1px solid rgba(74, 222, 128, 0.2);
+      padding: 14px;
+      border-radius: 14px;
+      margin-bottom: 20px;
+      text-align: left;
+      box-shadow: inset 3px 3px 7px rgba(8, 13, 11, 0.55), inset -3px -3px 7px rgba(42, 56, 50, 0.35);
+    }
+    .instruction strong { color: #22C55E; }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <div class="logo-badge">
+      <img src="Logoxuxadas.jpg" alt="Xuxadas Shop" style="width: 24px; height: 24px; border-radius: 50%; object-fit: cover; border: 1px solid #4ADE80;" /> XUXADAS SHOP WHATSAPP BOT
+    </div>
+
+    <h1>Disparador Automático</h1>
+    <p class="subtitle">Notificações instantâneas de pedidos via WhatsApp</p>
+
+    <!-- Caixa de Status -->
+    <div class="status-box">
+      <div class="status-indicator">
+        <div class="dot" id="status-dot"></div>
+        <span id="status-text">Conectando...</span>
+      </div>
+      <button class="btn btn-danger" id="btn-disconnect" onclick="disconnectWhatsApp()" style="display:none; padding: 6px 12px; font-size: 0.78rem;">
+        Desconectar
+      </button>
+    </div>
+
+    <!-- Visão 1: Aguardando QR Code -->
+    <div id="view-qr" style="display:none;">
+      <div class="instruction">
+        <strong>Como Conectar:</strong><br>
+        1. Abra o WhatsApp no celular (<strong>+244 952 359 654</strong>).<br>
+        2. Toque em <strong>Mais opções</strong> (⋮) ou <strong>Configurações</strong> &gt; <strong>Aparelhos conectados</strong>.<br>
+        3. Toque em <strong>Conectar um aparelho</strong> e aponte a câmera para o QR Code abaixo:
+      </div>
+
+      <div class="qr-container">
+        <img id="qr-image" src="" alt="QR Code WhatsApp" />
+      </div>
+      <p style="font-size: 0.78rem; color: #8CA297;">O QR Code atualiza automaticamente se expirar.</p>
+    </div>
+
+    <!-- Visão 2: Conectado com Sucesso -->
+    <div id="view-connected" class="connected-view">
+      <div class="connected-icon">🎉</div>
+      <h2 style="font-size: 1.3rem; margin-bottom: 6px; color: #4ADE80;">WhatsApp Ativo &amp; Operacional!</h2>
+      <p style="font-size: 0.85rem; color: #C5D4CD; margin-bottom: 12px;">Enviando notificações através do número:</p>
+      <div class="phone-pill" id="connected-phone">+244 952 359 654</div>
+      
+      <p style="font-size: 0.82rem; color: #8CA297; line-height: 1.4;">
+        Todas as notificações de conclusão de compras (Pedidos e Depósitos) serão enviadas automaticamente em segundo plano por este número.
+      </p>
+
+      <!-- Teste de Envio -->
+      <div class="test-box">
+        <label>Enviar Mensagem Teste:</label>
+        <input type="tel" id="test-phone" placeholder="Ex: +244952359654 ou 244952359654" />
+        <textarea id="test-message" rows="2" placeholder="Digite uma mensagem de teste...">Olá! Teste de envio automático do Robô WhatsApp XUXADAS SHOP! 🚀💎</textarea>
+        <button type="button" class="btn" style="width: 100%; justify-content: center;" onclick="sendTestMessage()">
+          ✉️ Enviar Notificação Teste
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let pollInterval = null;
+    let isConnected = false;
+    let currentPollRate = 0;
+
+    function setPollRate(ms) {
+      if (currentPollRate === ms) return;
+      currentPollRate = ms;
+      if (pollInterval) clearInterval(pollInterval);
+      pollInterval = setInterval(checkStatus, ms);
+    }
+
+    async function checkStatus() {
+      // Economia extrema de banda: não faz requisições se a aba estiver em segundo plano
+      if (document.hidden) return;
+
+      try {
+        // Só solicita o QR Code pesado em base64 se ainda NÃO estiver conectado
+        const endpoint = isConnected ? '/api/status' : '/api/status?qr=1';
+        const res = await fetch(endpoint);
+        const data = await res.json();
+
+        const dot = document.getElementById('status-dot');
+        const text = document.getElementById('status-text');
+        const viewQr = document.getElementById('view-qr');
+        const viewConn = document.getElementById('view-connected');
+        const qrImg = document.getElementById('qr-image');
+        const btnDisc = document.getElementById('btn-disconnect');
+        const phonePill = document.getElementById('connected-phone');
+
+        if (data.connected) {
+          isConnected = true;
+          dot.className = 'dot connected';
+          text.textContent = '🟢 Conectado (' + (data.phone || 'Ativo') + ')';
+          viewQr.style.display = 'none';
+          viewConn.style.display = 'block';
+          btnDisc.style.display = 'inline-block';
+          if (phonePill && data.phone) phonePill.textContent = data.phone;
+          
+          // Quando conectado, reduz drasticamente o polling para 30 segundos
+          setPollRate(30000);
+        } else if (data.hasQr || data.qr) {
+          isConnected = false;
+          dot.className = 'dot connecting';
+          text.textContent = '📱 Aguardando Escaneamento';
+          if (data.qr) qrImg.src = data.qr;
+          viewQr.style.display = 'block';
+          viewConn.style.display = 'none';
+          btnDisc.style.display = 'none';
+          
+          // Durante escaneamento checa a cada 4 segundos
+          setPollRate(4000);
+        } else {
+          isConnected = false;
+          dot.className = 'dot';
+          text.textContent = '⏳ Gerando QR Code...';
+          viewQr.style.display = 'none';
+          viewConn.style.display = 'none';
+          btnDisc.style.display = 'none';
+          setPollRate(4000);
+        }
+      } catch (e) {
+        document.getElementById('status-dot').className = 'dot';
+        document.getElementById('status-text').textContent = 'Servidor Offline';
+        setPollRate(15000);
+      }
+    }
+
+    // Retoma checagem imediatamente ao voltar para a aba
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) checkStatus();
+    });
+
+    async function disconnectWhatsApp() {
+      if (!confirm('Deseja realmente desconectar este WhatsApp e escanear um novo número?')) return;
+      try {
+        isConnected = false;
+        await fetch('/api/disconnect', { method: 'POST' });
+        checkStatus();
+      } catch (e) {
+        alert('Erro ao desconectar: ' + e.message);
+      }
+    }
+
+    async function sendTestMessage() {
+      const phone = document.getElementById('test-phone').value.trim();
+      const message = document.getElementById('test-message').value.trim();
+      if (!phone || !message) {
+        alert('Por favor informe o telefone e o texto da mensagem.');
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/send', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ phone, message })
+        });
+        const data = await res.json();
+        if (data.success) {
+          alert('✅ Mensagem enviada com sucesso para ' + phone + '!');
+        } else {
+          alert('❌ Erro: ' + (data.error || 'Falha ao enviar'));
+        }
+      } catch (e) {
+        alert('Erro na requisição: ' + e.message);
+      }
+    }
+
+    checkStatus();
+    setPollRate(4000);
+  </script>
+</body>
+</html>
+
