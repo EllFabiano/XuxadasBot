@@ -93,7 +93,7 @@ async function resolveJid(phone) {
 function buildClientMessage(type, data) {
   data = data || {};
   const nome = data.userName || data.customerName || data.name || 'Cliente';
-  const siteUrl = 'https://www.fabyshop.shop/perfil.html';
+  const siteUrl = 'https://xuxadas.shop/perfil.html';
 
   switch (type) {
     case 'order_ff': {
@@ -532,7 +532,7 @@ app.post('/api/notify-admin', async (req, res) => {
         `💰 *Valor:* ${price}${method}\n` +
         `📱 *WhatsApp Cliente:* ${clientPhone}\n\n` +
         `👉 *Acesse o Painel para Aprovar:*\n` +
-        `https://www.fabyshop.shop/admin-fb8x2.html?tab=orders`;
+        `https://xuxadas.shop/admin-fb8x2.html?tab=orders`;
 
     } else if (type === 'deposit' || type === 'fc_deposit') {
       const amount = orderData.requestedFp || orderData.amount || '0';
@@ -544,7 +544,7 @@ app.post('/api/notify-admin', async (req, res) => {
         `💵 *Valor Solicitado:* ${amount} XC${priceKz}${bank}\n` +
         `📱 *WhatsApp Cliente:* ${clientPhone}\n\n` +
         `👉 *Conferir Comprovativo no Painel:*\n` +
-        `https://www.fabyshop.shop/admin-fb8x2.html?tab=fc`;
+        `https://xuxadas.shop/admin-fb8x2.html?tab=fc`;
 
     } else if (type === 'chat') {
       const msgTxt = (orderData.text || orderData.message || 'Nova mensagem').substring(0, 150);
@@ -552,12 +552,12 @@ app.post('/api/notify-admin', async (req, res) => {
         `👤 *De:* ${cust}\n` +
         `📝 "${msgTxt}"\n\n` +
         `👉 *Responder no Painel:*\n` +
-        `https://www.fabyshop.shop/admin-fb8x2.html`;
+        `https://xuxadas.shop/admin-fb8x2.html`;
     }
   }
 
   if (!textToSend && (title || details)) {
-    textToSend = `🔔 *${title || 'ALERTA XUXADAS SHOP'}*\n\n${details || ''}\n\nhttps://www.fabyshop.shop/admin-fb8x2.html`;
+    textToSend = `🔔 *${title || 'ALERTA XUXADAS SHOP'}*\n\n${details || ''}\n\nhttps://xuxadas.shop/admin-fb8x2.html`;
   }
 
   if (!textToSend) {
