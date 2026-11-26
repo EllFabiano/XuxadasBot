@@ -3,13 +3,13 @@ title Enviar Robo para o GitHub
 color 0B
 echo =================================================================
 echo       ENVIANDO O ROBO PARA O SEU REPOSITORIO GITHUB
-echo       Repositorio: https://github.com/EllFabiano/fabyshop-whatsapp-bot
+echo       Repositorio: https://github.com/EllFabiano/XuxadasBot
 echo =================================================================
 echo.
 cd /d "%~dp0"
 
 git remote remove origin >nul 2>&1
-git remote add origin https://github.com/EllFabiano/fabyshop-whatsapp-bot.git
+git remote add origin https://github.com/EllFabiano/XuxadasBot.git
 git branch -M main
 
 echo [INFO] Salvando alteracoes locais...

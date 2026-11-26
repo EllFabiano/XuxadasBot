@@ -16,6 +16,7 @@ const zlib = require('zlib');
 
 const PORT = process.env.PORT || 3001;
 const AUTH_DIR = path.join(__dirname, 'auth_info');
+const SITE_URL = (process.env.SITE_URL || 'https://xuxadas.shop').replace(/\/+$/, '');
 
 const app = express();
 app.use(cors());
@@ -93,7 +94,7 @@ async function resolveJid(phone) {
 function buildClientMessage(type, data) {
   data = data || {};
   const nome = data.userName || data.customerName || data.name || 'Cliente';
-  const siteUrl = 'https://xuxadas.shop/perfil.html';
+  const siteUrl = `${SITE_URL}/perfil.html`;
 
   switch (type) {
     case 'order_ff': {

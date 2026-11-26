@@ -10,6 +10,8 @@ services:
         value: 20.18.0
       - key: ADMIN_PHONE
         value: "244952359654"
+      - key: SITE_URL
+        value: https://xuxadas.shop
       - key: REDIS_SESSION_KEY
         value: xuxadasshop_wa_session
       - key: UPSTASH_REDIS_REST_URL
